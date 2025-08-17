@@ -8,9 +8,9 @@ import { test } from "./test.js";
 
 test();
 
-const PORT = parseInt(process.env.WS_PORT || "3001", 10);
+const WS_PORT = parseInt(process.env.WS_PORT || "3001", 10);
 
-const io = new Server(PORT, {
+const io = new Server(WS_PORT, {
   cors: { origin: "*" },
 });
 
@@ -27,4 +27,4 @@ io.on("connection", (socket: Socket) => {
   });
 });
 
-console.log(`Socket.IO server running on port ${PORT}`);
+console.log(`Socket.IO server running on port ${WS_PORT}`);

@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { generateCode, saveCodeToDb } from "@/lib/personalCode";
 
-export async function GET(req: Request) {
+export async function GET() {
     const code = generateCode();
     await saveCodeToDb(code);
 
-    // Build absolute URL based on request
-    const url = new URL("/", req.url);
+    const url = process.env.NEXT_PUBLIC_BASE_URL!;
 
     const response = NextResponse.redirect(url);
     response.cookies.set({
