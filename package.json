@@ -2,27 +2,46 @@
   "name": "nextjs-bavymo",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "build:socket": "tsc server/socket-server.ts --outDir dist/server --module nodenext",
+    "start:socket": "NODE_ENV=production node dist/server/socket-server.js",
+    "build:next": "next build",
+    "start:next": "next start",
+    "build": "npm run build:socket && npm run build:next",
+    "start": "concurrently \"npm run start:next\" \"npm run start:socket\"",
+    "dev:next": "next dev --turbopack",
+    "dev:socket": "nodemon",
+    "dev": "concurrently \"npm run dev:next\" \"npm run dev:socket\"",
     "lint": "next lint"
   },
+  "nodemonConfig": {
+    "watch": ["server"],
+    "ext": "ts",
+    "exec": "node --loader ts-node/esm server/socket-server.ts"
+  },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "mongodb": "^6.18.0",
     "next": "15.4.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^20.19.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
+    "nodemon": "^3.1.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "undici-types": "^7.13.0"
   }
 }
